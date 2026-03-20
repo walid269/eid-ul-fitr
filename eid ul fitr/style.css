@@ -1,0 +1,382 @@
+/* ============================================================
+   EID MUBARAK 2026 — Mobile-First Design | Tanvir Ahmed Chowdhury
+   ============================================================ */
+
+:root {
+    --gold: #d4af37;
+    --gold-light: #fce98a;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --teal-deep: #042f24;
+    --teal-mid: #064e3b;
+    --teal-bright: #10b981;
+    --text-white: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(4, 47, 36, 0.55);
+    --glass-border: rgba(212, 175, 55, 0.22);
+}
+
+/* YouTube player hidden offscreen — display:none breaks the IFrame API */
+#yt-wrap {
+    position: fixed;
+    left: -9999px;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    /* Prevent font size inflation on iOS when rotating */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 14px; /* Slightly smaller base for small phones */
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(160deg, var(--teal-deep) 0%, var(--teal-mid) 100%);
+    /* Use 100svh (small viewport height) so iOS bottom bar doesn't cause overflow */
+    min-height: 100vh;
+    min-height: 100svh;
+    color: var(--text-white);
+    overflow-x: hidden;
+    /* iOS momentum scrolling */
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    /* iOS safe areas for notch / home indicator */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* ── GLOW ORBS ───────────────────────────────────── */
+.glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: driftOrb 14s infinite alternate ease-in-out;
+}
+.orb-1 {
+    width: 60vw; height: 60vw;
+    background: radial-gradient(circle, rgba(212,175,55,0.2), transparent 70%);
+    top: -15vw; left: -15vw;
+    animation-delay: 0s;
+}
+.orb-2 {
+    width: 55vw; height: 55vw;
+    background: radial-gradient(circle, rgba(16,185,129,0.18), transparent 70%);
+    bottom: -10vw; right: -10vw;
+    animation-delay: -5s;
+}
+.orb-3 {
+    width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -9s;
+}
+@keyframes driftOrb {
+    from { transform: translate(0) scale(1); }
+    to   { transform: translate(4vw, 6vw) scale(1.15); }
+}
+
+/* ── CANVAS PARTICLE DUST ────────────────────────── */
+#canvas-dust {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── FLOATING EMOJIS ─────────────────────────────── */
+.float-emojis {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+.fe {
+    position: absolute;
+    font-size: var(--sz, 1.5rem);
+    animation: floatUp var(--dur, 8s) var(--del, 0s) infinite ease-in-out;
+    opacity: 0.7;
+}
+@keyframes floatUp {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    50%  { transform: translateY(-25px) rotate(8deg); opacity: 1; }
+    100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+}
+
+/* ── MUSIC BUTTON ────────────────────────────────── */
+.music-toggle {
+    position: fixed;
+    /* iOS notch-aware top position */
+    top: calc(0.75rem + env(safe-area-inset-top));
+    right: calc(0.75rem + env(safe-area-inset-right));
+    z-index: 20;
+    /* 48px — Apple's minimum recommended tap target */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.15s ease;
+    /* Prevent callout on long press (iOS) */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+.music-toggle:active { transform: scale(0.9); }
+.music-toggle.playing .music-icon {
+    animation: musicBounce 0.8s ease-in-out infinite alternate;
+}
+@keyframes musicBounce {
+    from { transform: scale(1); }
+    to   { transform: scale(1.2); }
+}
+
+/* ── PAGE WRAPPER ────────────────────────────────── */
+.page {
+    position: relative;
+    z-index: 10;
+    /* fills full screen height on all mobile browsers */
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* safe area insets: notch top + home bar bottom */
+    padding-top: calc(4rem + env(safe-area-inset-top));
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    gap: 1.1rem;
+}
+
+/* ── 1. CALLIGRAPHY ──────────────────────────────── */
+.section-calligraphy {
+    text-align: center;
+    line-height: 1;
+}
+.arabic-calligraphy {
+    font-family: 'Aref Ruqaa', serif;
+    font-weight: 700;
+    /* clamp: min 3rem, scales with viewport, max 5rem — fits any phone */
+    font-size: clamp(3rem, 17vw, 5rem);
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 55%, #a07b10 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 14px var(--gold-glow));
+    animation: glowPulse 4s ease-in-out infinite;
+}
+.calligraphy-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-top: 0.3rem;
+}
+@keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 10px var(--gold-glow)); }
+    50%       { filter: drop-shadow(0 0 22px rgba(212,175,55,0.7)); }
+}
+
+/* ── 2. PROFILE ──────────────────────────────────── */
+.section-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Profile size in vw so it scales perfectly on any phone */
+.profile-ring-wrapper {
+    position: relative;
+    width: min(42vw, 160px);
+    height: min(42vw, 160px);
+}
+
+/* Spinning gradient ring */
+.outer-ring {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--gold) 0deg,
+        var(--teal-bright) 120deg,
+        var(--gold-light) 240deg,
+        var(--gold) 360deg
+    );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 4px));
+    animation: spinRing 8s linear infinite;
+}
+@keyframes spinRing {
+    to { transform: rotate(360deg); }
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 35%;
+    border: 3px solid rgba(212, 175, 55, 0.5);
+    display: block;
+    box-shadow:
+        0 0 0 2px rgba(16,185,129,0.3),
+        0 8px 30px rgba(0,0,0,0.6);
+    /* Prevent press-and-hold image save prompt on iOS */
+    -webkit-touch-callout: none;
+}
+
+.person-name {
+    /* vw-based scale: big on large phones, fits on small iPhones */
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #fff 30%, var(--gold-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* No text selection on mobile */
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.person-wish {
+    font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+    color: var(--text-muted);
+    font-weight: 300;
+    text-align: center;
+}
+
+/* ── 3. ORNAMENT DIVIDER ─────────────────────────── */
+.ornament-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    max-width: 280px;
+}
+.d-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.d-star {
+    color: var(--gold);
+    font-size: 0.85rem;
+    text-shadow: 0 0 8px var(--gold);
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* ── 4. MESSAGE ──────────────────────────────────── */
+.section-message {
+    text-align: center;
+    /* Full width but capped so text doesn't stretch too wide */
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+.message-text {
+    font-size: clamp(0.85rem, 3.8vw, 1rem);
+    font-weight: 300;
+    line-height: 1.75;
+    color: #cbd5e1;
+}
+.message-text strong {
+    color: var(--gold-light);
+    font-weight: 600;
+}
+.dua-text {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.03em;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    padding: 0.6rem 1rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.dua-meaning {
+    font-size: clamp(0.72rem, 3vw, 0.82rem);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ── 5. YEAR BADGE ───────────────────────────────── */
+.year-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 0.5rem;
+}
+.dot { color: var(--gold); font-size: 0.5rem; }
+
+/* ── FADE IN UP ANIMATION ────────────────────────── */
+.fade-up {
+    opacity: 0;
+    transform: translateY(28px);
+    animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.45s; }
+.delay-3 { animation-delay: 0.7s; }
+.delay-4 { animation-delay: 0.9s; }
+.delay-5 { animation-delay: 1.1s; }
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── VERY SMALL PHONES (e.g. iPhone SE 375px) ────── */
+@media (max-width: 375px) {
+    .arabic-calligraphy { font-size: clamp(2.6rem, 16vw, 3.5rem); }
+    .page { gap: 0.85rem; }
+    .profile-ring-wrapper { width: 38vw; height: 38vw; }
+}
+
+/* ── LANDSCAPE MODE (phone rotated) ──────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+    .page {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        gap: 0.5rem;
+        padding-top: calc(1rem + env(safe-area-inset-top));
+    }
+    .arabic-calligraphy { font-size: 2.2rem; }
+    .profile-ring-wrapper { width: 90px; height: 90px; }
+    .section-message { max-width: 45%; }
+    .ornament-divider { display: none; }
+}

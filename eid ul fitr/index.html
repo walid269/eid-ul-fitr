@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#042f24">
+    <title>Eid Mubarak 2026 — Tanvir Ahmed Chowdhury</title>
+    <meta name="description" content="Eid ul Fitr Mubarak 2026 — Warm wishes from Tanvir Ahmed Chowdhury">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Glowing background orbs -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Golden dust particles canvas -->
+    <canvas id="canvas-dust"></canvas>
+
+    <!-- Floating emojis -->
+    <div class="float-emojis" id="floatEmojis"></div>
+
+    <!-- Music toggle button -->
+    <button class="music-toggle" id="musicBtn" title="Play Background Music">
+        <span class="music-icon">🎵</span>
+    </button>
+
+    <!-- YouTube player: hidden offscreen, NOT display:none (breaks IFrame API) -->
+    <div id="yt-wrap" aria-hidden="true">
+        <div id="yt-player"></div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--                MAIN CONTENT                 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <main class="page">
+
+        <!-- ✦ 1. Arabic Calligraphy ✦ -->
+        <section class="section-calligraphy fade-up delay-1">
+            <p class="arabic-calligraphy">عيد مبارك</p>
+            <p class="calligraphy-sub">Eid Mubarak</p>
+        </section>
+
+        <!-- ✦ 2. Profile Card ✦ -->
+        <section class="section-profile fade-up delay-2">
+            <div class="profile-ring-wrapper">
+                <div class="outer-ring"></div>
+                <img src="mypic.jpg" alt="Tanvir Ahmed Chowdhury" class="profile-photo">
+            </div>
+            <h2 class="person-name">Tanvir Ahmed Chowdhury</h2>
+            <p class="person-wish">Wishing you a blessed Eid ul Fitr 2026 🌙</p>
+        </section>
+
+        <!-- ✦ 3. Divider ✦ -->
+        <div class="ornament-divider fade-up delay-3">
+            <span class="d-line"></span>
+            <span class="d-star">✦</span>
+            <span class="d-line"></span>
+        </div>
+
+        <!-- ✦ 4. Eid Message ✦  -->
+        <section class="section-message fade-up delay-4">
+            <p class="message-text">
+                May the divine blessings of Allah bring you<br>
+                <strong>hope, faith, and joy</strong> on this holy Eid<br>
+                and every day of your life. 🤲
+            </p>
+            <p class="dua-text">"Taqabbalallahu Minna Wa Minkum"</p>
+            <p class="dua-meaning">May Allah accept from us and from you</p>
+        </section>
+
+        <!-- ✦ 5. Year Badge ✦ -->
+        <div class="year-badge fade-up delay-5">
+            <span>Eid ul Fitr</span>
+            <span class="dot">·</span>
+            <span>2026</span>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
